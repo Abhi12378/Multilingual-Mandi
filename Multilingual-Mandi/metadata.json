@@ -1,7 +1,0 @@
-{
-  "name": "The Multilingual Mandi",
-  "description": "A real-time linguistic bridge and price discovery platform for local Indian vendors, enabling seamless negotiation and market transparency through Gemini AI.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
-}

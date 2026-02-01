@@ -1,12 +1,28 @@
 
 import React, { useState } from 'react';
-import { ShoppingBag, LayoutDashboard, Languages, Info, Menu, X, ChevronRight } from 'lucide-react';
+import { ShoppingBag, LayoutDashboard, Languages, Info, Menu, X, ChevronRight, LogOut } from 'lucide-react';
 import MarketDashboard from './components/MarketDashboard';
 import VoiceNegotiator from './components/VoiceNegotiator';
+import AuthPage from './components/AuthPage';
+import { UserProfile } from './types';
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'negotiate'>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleLogin = (profile: UserProfile) => {
+    setUser(profile);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setActiveTab('dashboard');
+  };
+
+  if (!user) {
+    return <AuthPage onLogin={handleLogin} />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
@@ -76,14 +92,27 @@ const App: React.FC = () => {
                 Empowering India's local traders with cutting-edge AI for inclusive commerce.
               </p>
             </div>
-            <div className="flex items-center gap-3 px-4 py-3">
-              <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
-                RV
+            
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3 px-4 py-2">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-sm ${
+                  user.isGuest ? 'bg-slate-200 text-slate-600' : 'bg-indigo-100 text-indigo-600'
+                }`}>
+                  {user.avatar || user.name.charAt(0)}
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-sm font-bold text-slate-800 truncate">{user.name}</p>
+                  <p className="text-xs text-slate-500 truncate">{user.role}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-slate-800 leading-none">Ram Vilas</p>
-                <p className="text-xs text-slate-500 mt-1">Local Vendor</p>
-              </div>
+              
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 font-medium hover:bg-rose-50 rounded-lg transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
             </div>
           </div>
         </div>

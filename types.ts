@@ -20,3 +20,10 @@ export interface TranscriptionItem {
   text: string;
   timestamp: number;
 }
+
+export interface UserProfile {
+  name: string;
+  role: string;
+  isGuest: boolean;
+  avatar?: string;
+}
